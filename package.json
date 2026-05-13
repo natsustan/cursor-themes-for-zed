@@ -9,7 +9,7 @@
   "description": "A Zed port of Cursor's theme family, including Cursor Dark, Cursor Dark Midnight, Cursor Dark High Contrast, and Cursor Light. Converted from the original VS Code themes with matching editor UI, syntax highlighting, and terminal colors.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ryokun6/cursor-themes.git"
+    "url": "https://github.com/nexmoe/cursor-themes-for-zed.git"
   },
   "scripts": {
     "build": "bun run scripts/convert-vscode-to-zed.mjs",
