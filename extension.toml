@@ -1,7 +1,7 @@
-id = "cursor-themes"
-name = "Cursor Themes"
+id = "cursor-pack-theme"
+name = "Cursor Theme Pack"
 version = "2.0.0"
 schema_version = 1
-authors = ["Nexmoe"]
-description = "A Zed port of Cursor's theme family, including Cursor Dark, Cursor Dark Midnight, Cursor Dark High Contrast, and Cursor Light. Converted from the original VS Code themes with matching editor UI, syntax highlighting, and terminal colors."
+authors = ["Nexmoe <16796652+nexmoe@users.noreply.github.com>"]
+description = "An unofficial all-in-one Cursor theme pack with Dark, Dark Midnight, Dark High Contrast, and Light variants."
 repository = "https://github.com/nexmoe/cursor-themes-for-zed"

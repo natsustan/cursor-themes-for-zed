@@ -1,12 +1,12 @@
 {
-  "name": "cursor-theme",
-  "version": "0.1.0",
+  "name": "cursor-pack-theme",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
   "packageManager": "bun@1.3.2",
   "author": "Nexmoe",
   "license": "MIT",
-  "description": "A Zed port of Cursor's theme family, including Cursor Dark, Cursor Dark Midnight, Cursor Dark High Contrast, and Cursor Light. Converted from the original VS Code themes with matching editor UI, syntax highlighting, and terminal colors.",
+  "description": "Build tooling for an unofficial all-in-one Cursor theme pack for Zed.",
   "repository": {
     "type": "git",
     "url": "https://github.com/nexmoe/cursor-themes-for-zed.git"
@@ -14,6 +14,6 @@
   "scripts": {
     "build": "bun run scripts/convert-vscode-to-zed.mjs",
     "generate": "bun run scripts/convert-vscode-to-zed.mjs",
-    "check": "bun run scripts/convert-vscode-to-zed.mjs"
+    "check": "bun run scripts/convert-vscode-to-zed.mjs --check"
   }
 }

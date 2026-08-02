@@ -1,18 +1,34 @@
-# Cursor Themes for Zed
+# Cursor Theme Pack for Zed
 
-Cursor's theme family for [Zed](https://zed.dev/), including `Cursor Dark`, `Cursor Dark Midnight`, `Cursor Dark High Contrast`, and `Cursor Light`.
+An unofficial all-in-one Cursor theme extension for Zed. One installation
+provides the complete theme family:
 
-The themes are converted from the original VS Code sources and aim to preserve the Cursor look across editor UI colors, syntax highlighting, and terminal colors inside Zed.
+- Cursor Dark
+- Cursor Dark Midnight
+- Cursor Dark High Contrast
+- Cursor Light
 
-## Usage
+## Why Cursor Theme Pack?
 
-1. Open Zed.
-2. Open the command palette and run `zed: install dev extension`.
-3. Select this repository root.
-4. Open the command palette and run `theme selector: toggle`.
-5. Choose one of the Cursor themes.
+The Zed extension registry already contains individual Cursor-inspired themes,
+but none of them provides all four variants as one consistently generated
+package. Cursor Theme Pack is intended for users who want the complete family
+from one extension, including Light and High Contrast, rather than installing
+and mixing multiple theme extensions.
 
-If theme changes do not appear immediately, run `zed: reload extensions`. A full workspace reload may also help.
+This community project is not affiliated with or endorsed by Anysphere. Cursor
+is a product and trademark of Anysphere, Inc.
+
+## Installation
+
+After the extension is published:
+
+1. Open Zed's Extensions page.
+2. Search for `Cursor Theme Pack` and install it.
+3. Run `theme selector: toggle` and choose a Cursor theme.
+
+For local development, run `zed: install dev extension` and select this
+repository root.
 
 ## Previews
 
@@ -26,33 +42,57 @@ If theme changes do not appear immediately, run `zed: reload extensions`. A full
 
 ## Development
 
-This repository is managed with Bun and generates Zed theme files from the original VS Code theme JSON sources.
+The checked-in Zed theme files are generated from the corresponding VS Code
+theme sources:
 
 ```sh
 bun install
-bun run build
+bun run generate
+bun run check
 ```
 
-Generated files are written to [`themes/`](./themes), and the original VS Code sources are kept in [`vscode-themes/`](./vscode-themes).
+`bun run check` verifies without modifying files and fails if the checked-in
+themes are missing, stale, or unexpected.
 
-## Project Layout
+## Publishing to the Zed extension registry
+
+The extension ID is `cursor-pack-theme`. In a fork of
+[`zed-industries/extensions`](https://github.com/zed-industries/extensions),
+add this repository at the matching submodule path:
+
+```sh
+git submodule add https://github.com/nexmoe/cursor-themes-for-zed.git extensions/cursor-pack-theme
+```
+
+Add the matching registry entry to `extensions.toml`:
+
+```toml
+[cursor-pack-theme]
+submodule = "extensions/cursor-pack-theme"
+version = "2.0.0"
+```
+
+Then run the required formatter before opening the pull request:
+
+```sh
+pnpm sort-extensions
+```
+
+The pull request should explain that this extension's distinct purpose is to
+provide the complete four-theme Cursor family in one package. The submodule
+must point to a commit reachable from this repository's default branch, and
+the registry version must match `extension.toml`.
+
+## Project layout
 
 ```text
-extension.toml              # Zed extension manifest
-package.json                # Bun scripts and local project metadata
+extension.toml
+themes/*.json
+vscode-themes/*.json
 scripts/convert-vscode-to-zed.mjs
-themes/*.json               # Generated Zed theme files
-vscode-themes/*.json        # Original VS Code theme sources
+preview/*.png
 ```
 
-The converter follows Zed's official VS Code importer mapping for:
-
-- UI color slots
-- syntax token scope matching
-- font style and bold/italic conversion
-
-## Notes
-
-- Zed themes use `themes/*.json` plus `extension.toml`; `package.json` is only used for local Bun scripts.
-- Zed does not have a separate high-contrast appearance type, so `Cursor Dark High Contrast` is exported as a dark theme.
-- This repository currently targets local development as a Zed dev extension.
+The MIT license covers this project's conversion code and generated Zed theme
+files. The Cursor name and original visual design remain the property of their
+respective owner.

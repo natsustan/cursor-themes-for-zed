@@ -622,7 +622,26 @@ function convertTheme(themeConfig) {
   };
 }
 
-function main() {
+function renderThemes() {
+  const renderedThemes = new Map();
+
+  for (const themeConfig of THEME_FILES) {
+    const theme = convertTheme(themeConfig);
+    const fileName = toThemeFileName(theme.name);
+    const themeFamily = {
+      $schema: "https://zed.dev/schema/themes/v0.2.0.json",
+      name: theme.name,
+      author: "Nexmoe",
+      themes: [theme],
+    };
+
+    renderedThemes.set(fileName, `${JSON.stringify(themeFamily, null, 2)}\n`);
+  }
+
+  return renderedThemes;
+}
+
+function generateThemes(renderedThemes) {
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
   for (const entry of fs.readdirSync(OUTPUT_DIR)) {
@@ -631,19 +650,49 @@ function main() {
     }
   }
 
-  for (const themeConfig of THEME_FILES) {
-    const theme = convertTheme(themeConfig);
-    const outputPath = path.join(OUTPUT_DIR, toThemeFileName(theme.name));
-    const themeFamily = {
-      $schema: "https://zed.dev/schema/themes/v0.2.0.json",
-      name: theme.name,
-      author: "Nexmoe",
-      themes: [theme],
-    };
-
-    fs.writeFileSync(outputPath, `${JSON.stringify(themeFamily, null, 2)}\n`);
+  for (const [fileName, contents] of renderedThemes) {
+    const outputPath = path.join(OUTPUT_DIR, fileName);
+    fs.writeFileSync(outputPath, contents);
     console.log(`Wrote ${path.relative(ROOT, outputPath)}`);
   }
 }
 
-main();
+function checkThemes(renderedThemes) {
+  const problems = [];
+  const existingFiles = fs.existsSync(OUTPUT_DIR)
+    ? fs.readdirSync(OUTPUT_DIR).filter((entry) => entry.endsWith(".json"))
+    : [];
+
+  for (const fileName of existingFiles) {
+    if (!renderedThemes.has(fileName)) {
+      problems.push(`Unexpected generated theme: themes/${fileName}`);
+    }
+  }
+
+  for (const [fileName, expectedContents] of renderedThemes) {
+    const outputPath = path.join(OUTPUT_DIR, fileName);
+
+    if (!fs.existsSync(outputPath)) {
+      problems.push(`Missing generated theme: themes/${fileName}`);
+      continue;
+    }
+
+    if (fs.readFileSync(outputPath, "utf8") !== expectedContents) {
+      problems.push(`Stale generated theme: themes/${fileName}`);
+    }
+  }
+
+  if (problems.length > 0) {
+    throw new Error(`${problems.join("\n")}\nRun \`bun run generate\` to fix them.`);
+  }
+
+  console.log(`Checked ${renderedThemes.size} generated themes.`);
+}
+
+const renderedThemes = renderThemes();
+
+if (process.argv.includes("--check")) {
+  checkThemes(renderedThemes);
+} else {
+  generateThemes(renderedThemes);
+}
