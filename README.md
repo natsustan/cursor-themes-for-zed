@@ -56,19 +56,19 @@ themes are missing, stale, or unexpected.
 
 ## Publishing to the Zed extension registry
 
-The extension ID is `cursor-pack-theme`. In a fork of
+The extension ID is `cursor-theme-pack`. In a fork of
 [`zed-industries/extensions`](https://github.com/zed-industries/extensions),
 add this repository at the matching submodule path:
 
 ```sh
-git submodule add https://github.com/nexmoe/cursor-themes-for-zed.git extensions/cursor-pack-theme
+git submodule add https://github.com/nexmoe/cursor-themes-for-zed.git extensions/cursor-theme-pack
 ```
 
 Add the matching registry entry to `extensions.toml`:
 
 ```toml
-[cursor-pack-theme]
-submodule = "extensions/cursor-pack-theme"
+[cursor-theme-pack]
+submodule = "extensions/cursor-theme-pack"
 version = "2.0.0"
 ```
 
